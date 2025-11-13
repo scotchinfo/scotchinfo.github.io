@@ -3,11 +3,14 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     height: 100%;
     background: black;
     color: #0F0;
     font-family: 'Share Tech Mono', monospace;
+}
+
+body:not(.no-matrix) {
+    overflow: hidden;
 }
 
 canvas {
@@ -124,6 +127,7 @@ h2 {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .committee-container h1 {
@@ -176,10 +180,21 @@ h2 {
     overflow: hidden;
 }
 
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .profile-image::before {
     content: '👤';
     font-size: 4rem;
     opacity: 0.3;
+}
+
+.profile-image:has(img)::before {
+    content: none;
 }
 
 .profile-card h3 {
@@ -243,6 +258,7 @@ h2 {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .ide-container h1 {
@@ -432,6 +448,12 @@ h2 {
     
     .profile-image::before {
         font-size: 3rem;
+    }
+
+    .profile-card .email {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.6rem;
+        word-break: break-all;
     }
 
     .ide-container h1 {
