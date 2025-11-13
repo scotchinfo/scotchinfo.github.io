@@ -50,6 +50,34 @@ print('Hello, World!')
     </div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Make db and increment available globally
+    window.firebaseDB = db;
+    window.firestoreIncrement = increment;
+    window.firestoreDoc = doc;
+    window.firestoreSetDoc = setDoc;
+    
+    console.log("Firebase initialized successfully!");
+  </script>
+
   <script src="ide.js"></script>
 </body>
 </html>

@@ -140,6 +140,29 @@ codeEditor.addEventListener('keydown', (e) => {
     }
 });
 
+// Firebase Analytics Function
+async function trackSubmission(lineCount) {
+    try {
+        if (!window.firebaseDB) {
+            console.warn("Firebase not initialized yet");
+            return;
+        }
+        
+        const analyticsRef = window.firestoreDoc(window.firebaseDB, 'analytics', 'stats');
+        
+        // Update total submissions and line count
+        await window.firestoreSetDoc(analyticsRef, {
+            totalSubmissions: window.firestoreIncrement(1),
+            totalLineCount: window.firestoreIncrement(lineCount),
+            lastUpdated: new Date().toISOString()
+        }, { merge: true });
+        
+        console.log(`Analytics updated: +1 submission, +${lineCount} lines`);
+    } catch (error) {
+        console.error("Failed to update analytics:", error);
+    }
+}
+
 // Run button click handler
 runButton.addEventListener('click', async () => {
     // Clear previous output
@@ -171,6 +194,12 @@ runButton.addEventListener('click', async () => {
         runButton.disabled = false;
         return;
     }
+    
+    // Count lines of code (non-empty lines)
+    const lineCount = code.split('\n').filter(line => line.trim().length > 0).length;
+    
+    // Track analytics in Firebase
+    trackSubmission(lineCount);
     
     try {
         // Prepare stdin mock
