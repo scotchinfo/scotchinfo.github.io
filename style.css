@@ -45,6 +45,7 @@ canvas {
     padding: 1rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
 .nav-link {
@@ -78,6 +79,12 @@ canvas {
 .nav-link:hover::before {
     opacity: 1;
     left: -10px;
+}
+
+.nav-link.login-link {
+    position: absolute;
+    right: 0;
+    margin-left: auto;
 }
 
 /* Overlay container for text */
@@ -418,6 +425,200 @@ h2 {
     display: block;
 }
 
+/* Login Page Styles */
+.login-container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 6rem 2rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.login-box {
+    background: rgba(0, 255, 153, 0.05);
+    border: 2px solid #00ff99;
+    border-radius: 10px;
+    padding: 3rem 2.5rem;
+    max-width: 450px;
+    width: 100%;
+    box-shadow: 0 0 30px rgba(0, 255, 153, 0.3);
+    transition: all 0.3s ease;
+}
+
+.login-box.error-flash {
+    background: rgba(255, 0, 0, 0.15);
+    border-color: #ff0000;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    animation: errorShake 0.5s ease;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.login-box h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: #00ff99;
+    text-shadow: 0 0 15px #00ff99;
+    margin: 0 0 2rem 0;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.login-box h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: #00ff99;
+    text-shadow: 0 0 10px #00ff99;
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+}
+
+.auth-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #00ff99;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00ff99;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.auth-input:focus {
+    border-color: #0f0;
+    box-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
+}
+
+.auth-input::placeholder {
+    color: rgba(0, 255, 153, 0.4);
+}
+
+.auth-button {
+    width: 100%;
+    padding: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    color: #00ff99;
+    background: rgba(0, 255, 153, 0.1);
+    border: 2px solid #00ff99;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.auth-button:hover:not(:disabled) {
+    background: rgba(0, 255, 153, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 153, 0.4);
+    transform: translateY(-2px);
+}
+
+.auth-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.logout-button {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: #ff3333;
+    color: #ff3333;
+}
+
+.logout-button:hover:not(:disabled) {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.auth-switch {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: rgba(0, 255, 153, 0.7);
+    margin: 0.5rem 0 0 0;
+}
+
+.auth-switch a {
+    color: #00ff99;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.auth-switch a:hover {
+    color: #0f0;
+    text-shadow: 0 0 5px #00ff99;
+}
+
+.auth-message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    text-align: center;
+    display: none;
+}
+
+.auth-message.success {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+}
+
+.auth-message.error {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff3333;
+    color: #ff3333;
+}
+
+.user-info {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.username-display {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: #00ff99;
+    text-shadow: 0 0 15px #00ff99;
+    margin: 0 0 1rem 0;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.user-email {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: rgba(0, 255, 153, 0.7);
+    margin: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-container {
@@ -486,5 +687,19 @@ h2 {
     .input-box {
         font-size: 0.9rem;
         min-height: 60px;
+    }
+
+    .login-box {
+        padding: 2rem 1.5rem;
+    }
+
+    .login-box h1 {
+        font-size: 2rem;
+    }
+
+    .auth-input,
+    .auth-button {
+        font-size: 0.9rem;
+        padding: 0.8rem;
     }
 }
