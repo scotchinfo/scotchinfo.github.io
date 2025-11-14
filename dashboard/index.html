@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Informatics Club</title>
+  <link rel="stylesheet" href="dashboard-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Welcome back, <span id="dashboardUsername">Guest</span></h1>
+        <button id="dashboardAuthButton" class="auth-btn">Login</button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+      <a href="index.html" class="nav-item active">Content</a>
+      <a href="resources.html" class="nav-item">Resources</a>
+      <a href="ide.html" class="nav-item">IDE</a>
+      <a href="challenge.html" class="nav-item">Challenge</a>
+    </nav>
+
+    <main class="dashboard-main">
+      <!-- Weekly Plan Grid -->
+      <div class="weekly-plan">
+        <div class="week-card" onclick="handleWeekClick(1)">
+          <div class="week-number">W1</div>
+          <div class="week-title">Intro to Python</div>
+          <div class="week-meta">
+            <span class="week-problems">0/2 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(2)">
+          <div class="week-number">W2</div>
+          <div class="week-title">Loops and Control</div>
+          <div class="week-meta">
+            <span class="week-problems">0/3 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(3)">
+          <div class="week-number">W3</div>
+          <div class="week-title">Functions</div>
+          <div class="week-meta">
+            <span class="week-problems">0/3 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(4)">
+          <div class="week-number">W4</div>
+          <div class="week-title">Brute Force</div>
+          <div class="week-meta">
+            <span class="week-problems">0/4 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(5)">
+          <div class="week-number">W5</div>
+          <div class="week-title">Greedy Algorithms</div>
+          <div class="week-meta">
+            <span class="week-problems">0/4 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(6)">
+          <div class="week-number">W6</div>
+          <div class="week-title">Prefix Sums</div>
+          <div class="week-meta">
+            <span class="week-problems">0/3 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(7)">
+          <div class="week-number">W7</div>
+          <div class="week-title">Two Pointers</div>
+          <div class="week-meta">
+            <span class="week-problems">0/3 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+
+        <div class="week-card" onclick="handleWeekClick(8)">
+          <div class="week-number">W8</div>
+          <div class="week-title">Binary Search</div>
+          <div class="week-meta">
+            <span class="week-problems">0/4 problems</span>
+            <span class="week-status locked">Locked</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function handleWeekClick(weekNumber) {
+      console.log(`Week ${weekNumber} clicked`);
+      // Placeholder for future navigation
+    }
+  </script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    window.firebaseAuth = auth;
+    window.firebaseDB = db;
+
+    // Load analytics stats
+    async function loadStats() {
+      try {
+        const statsDoc = await getDoc(doc(db, 'analytics', 'stats'));
+        if (statsDoc.exists()) {
+          const data = statsDoc.data();
+          document.getElementById('totalSubmissions').textContent = data.totalSubmissions || 0;
+          document.getElementById('totalLines').textContent = (data.totalLineCount || 0).toLocaleString();
+        }
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    }
+
+    // Update dashboard UI based on auth state
+    onAuthStateChanged(auth, (user) => {
+      // Redirect to login if not authenticated
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+      
+      usernameEl.textContent = user.displayName || 'User';
+      usernameEl.style.cursor = 'pointer';
+      usernameEl.onclick = () => window.location.href = 'home.html';
+      authBtn.textContent = 'Logout';
+      authBtn.onclick = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      };
+    });
+
+    // Load stats on page load
+    loadStats();
+  </script>
+</body>
+</html>

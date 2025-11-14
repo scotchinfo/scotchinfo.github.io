@@ -16,6 +16,7 @@ const signupButton = document.getElementById('signupButton');
 const logoutButton = document.getElementById('logoutButton');
 const userName = document.getElementById('userName');
 const userEmail = document.getElementById('userEmail');
+const userAvatarLetter = document.getElementById('userAvatarLetter');
 
 const showSignupLink = document.getElementById('showSignup');
 const showLoginLink = document.getElementById('showLogin');
@@ -28,11 +29,13 @@ function showMessage(message, isError = false) {
     
     // Flash red border for errors
     if (isError) {
-        const loginBox = document.querySelector('.login-box');
-        loginBox.classList.add('error-flash');
-        setTimeout(() => {
-            loginBox.classList.remove('error-flash');
-        }, 500);
+        const activeCard = document.querySelector('.auth-card:not([style*="display: none"])');
+        if (activeCard) {
+            activeCard.classList.add('error-flash');
+            setTimeout(() => {
+                activeCard.classList.remove('error-flash');
+            }, 500);
+        }
     }
     
     setTimeout(() => {
@@ -54,19 +57,6 @@ showLoginLink.addEventListener('click', (e) => {
     loginForm.style.display = 'block';
     authMessage.style.display = 'none';
 });
-
-// Update navbar login link
-function updateNavbarLoginLink(user) {
-    const loginLink = document.querySelector('.nav-link.login-link');
-    if (loginLink) {
-        if (user) {
-            loginLink.textContent = user.displayName || 'User';
-            loginLink.style.color = '#00ff99';
-        } else {
-            loginLink.textContent = 'Login';
-        }
-    }
-}
 
 // Wait for Firebase Auth to be available
 function waitForAuth() {
@@ -90,19 +80,15 @@ waitForAuth().then((auth) => {
             signupForm.style.display = 'none';
             loggedInView.style.display = 'block';
             
-            userName.textContent = user.displayName || 'User';
+            const displayName = user.displayName || 'User';
+            userName.textContent = displayName;
             userEmail.textContent = user.email;
-            
-            // Update navbar
-            updateNavbarLoginLink(user);
+            userAvatarLetter.textContent = displayName.charAt(0).toUpperCase();
         } else {
             // User is logged out
             loginForm.style.display = 'block';
             signupForm.style.display = 'none';
             loggedInView.style.display = 'none';
-            
-            // Update navbar
-            updateNavbarLoginLink(null);
         }
     };
 
@@ -123,18 +109,23 @@ loginButton.addEventListener('click', async () => {
     }
 
     loginButton.disabled = true;
-    loginButton.textContent = 'Logging in...';
+    loginButton.textContent = 'Signing in...';
 
     try {
         const auth = window.firebaseAuth;
         const { signInWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js');
         
         await signInWithEmailAndPassword(auth, email, password);
-        showMessage('Login successful!');
+        showMessage('Login successful! Redirecting...');
         
         // Clear form
         loginEmail.value = '';
         loginPassword.value = '';
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
     } catch (error) {
         console.error('Login error:', error);
         let errorMessage = 'Login failed. ';
@@ -149,6 +140,9 @@ loginButton.addEventListener('click', async () => {
             case 'auth/invalid-email':
                 errorMessage += 'Invalid email address.';
                 break;
+            case 'auth/invalid-credential':
+                errorMessage += 'Invalid email or password.';
+                break;
             case 'auth/too-many-requests':
                 errorMessage += 'Too many failed attempts. Try again later.';
                 break;
@@ -159,7 +153,7 @@ loginButton.addEventListener('click', async () => {
         showMessage(errorMessage, true);
     } finally {
         loginButton.disabled = false;
-        loginButton.textContent = 'Login';
+        loginButton.textContent = 'Sign In';
     }
 });
 
@@ -192,7 +186,7 @@ signupButton.addEventListener('click', async () => {
     }
 
     signupButton.disabled = true;
-    signupButton.textContent = 'Signing up...';
+    signupButton.textContent = 'Creating account...';
 
     try {
         const auth = window.firebaseAuth;
@@ -205,19 +199,24 @@ signupButton.addEventListener('click', async () => {
             displayName: username
         });
         
-        showMessage('Account created successfully!');
+        showMessage('Account created successfully! Redirecting...');
         
         // Clear form
         signupUsername.value = '';
         signupEmail.value = '';
         signupPassword.value = '';
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1000);
     } catch (error) {
         console.error('Signup error:', error);
         let errorMessage = '';
         
         switch (error.code) {
             case 'auth/email-already-in-use':
-                errorMessage = 'This email is already registered. Please use a different email or login.';
+                errorMessage = 'This email is already registered. Please use a different email or sign in.';
                 break;
             case 'auth/invalid-email':
                 errorMessage = 'Invalid email address. Please check and try again.';
@@ -232,7 +231,7 @@ signupButton.addEventListener('click', async () => {
         showMessage(errorMessage, true);
     } finally {
         signupButton.disabled = false;
-        signupButton.textContent = 'Sign Up';
+        signupButton.textContent = 'Create Account';
     }
 });
 
@@ -243,10 +242,10 @@ logoutButton.addEventListener('click', async () => {
         const { signOut } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js');
         
         await signOut(auth);
-        showMessage('Logged out successfully!');
+        showMessage('Signed out successfully!');
     } catch (error) {
         console.error('Logout error:', error);
-        showMessage('Logout failed: ' + error.message, true);
+        showMessage('Sign out failed: ' + error.message, true);
     }
 });
 

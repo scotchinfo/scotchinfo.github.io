@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge - Informatics Club</title>
+  <link rel="stylesheet" href="dashboard-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Welcome back, <span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
+        <button id="dashboardAuthButton" class="auth-btn">Login</button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+      <a href="index.html" class="nav-item">Content</a>
+      <a href="resources.html" class="nav-item">Resources</a>
+      <a href="ide.html" class="nav-item">IDE</a>
+      <a href="challenge.html" class="nav-item active">Challenge</a>
+    </nav>
+
+    <main class="dashboard-main">
+      <div class="challenge-section">
+        <h2 class="section-title">Challenge Problems</h2>
+        <p class="section-description">Test your skills with these harder problems. They will match the difficulty of problems in the real AIO competition. The problems are designed to be hard to prepare you.</p>
+        
+        <!-- Challenge Grid -->
+        <div class="challenge-grid">
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty easy">Easy</div>
+              <div class="challenge-points">10 points</div>
+            </div>
+            <h3>Two Sum</h3>
+            <p class="challenge-description">Given an array of integers, return indices of the two numbers that add up to a specific target.</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 30 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(1)">Start Challenge</button>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty easy">Easy</div>
+              <div class="challenge-points">15 points</div>
+            </div>
+            <h3>Palindrome Check</h3>
+            <p class="challenge-description">Determine if a given string is a palindrome, considering only alphanumeric characters.</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 20 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(2)">Start Challenge</button>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty medium">Medium</div>
+              <div class="challenge-points">25 points</div>
+            </div>
+            <h3>Longest Substring</h3>
+            <p class="challenge-description">Find the length of the longest substring without repeating characters.</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 45 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(3)">Start Challenge</button>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty medium">Medium</div>
+              <div class="challenge-points">30 points</div>
+            </div>
+            <h3>Binary Tree Level Order</h3>
+            <p class="challenge-description">Given a binary tree, return the level order traversal of its nodes' values.</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 60 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(4)">Start Challenge</button>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty hard">Hard</div>
+              <div class="challenge-points">50 points</div>
+            </div>
+            <h3>Median of Two Sorted Arrays</h3>
+            <p class="challenge-description">Find the median of two sorted arrays with optimal time complexity O(log(m+n)).</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 90 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(5)">Start Challenge</button>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <div class="challenge-difficulty hard">Hard</div>
+              <div class="challenge-points">60 points</div>
+            </div>
+            <h3>Trapping Rain Water</h3>
+            <p class="challenge-description">Calculate how much rain water can be trapped after raining given an elevation map.</p>
+            <div class="challenge-meta">
+              <span class="challenge-stat">✓ 0 solved</span>
+              <span class="challenge-stat">⏱ 75 min</span>
+            </div>
+            <button class="challenge-button" onclick="openChallenge(6)">Start Challenge</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function openChallenge(challengeId) {
+      console.log(`Opening challenge ${challengeId}`);
+      // Placeholder for future navigation to challenge detail page
+      alert(`Challenge ${challengeId} coming soon!`);
+    }
+  </script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    window.firebaseAuth = auth;
+    window.firebaseDB = db;
+
+    // Update dashboard UI based on auth state
+    onAuthStateChanged(auth, (user) => {
+      // Redirect to login if not authenticated
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+      
+      usernameEl.textContent = user.displayName || 'User';
+      usernameEl.style.cursor = 'pointer';
+      usernameEl.onclick = () => window.location.href = 'home.html';
+      authBtn.textContent = 'Logout';
+      authBtn.onclick = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      };
+    });
+  </script>
+</body>
+</html>

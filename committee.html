@@ -11,8 +11,7 @@
     <div class="nav-container">
       <a href="index.html" class="nav-link">Home</a>
       <a href="committee.html" class="nav-link active">Committee</a>
-      <a href="ide.html" class="nav-link">IDE</a>
-      <a href="login.html" class="nav-link login-link">Login</a>
+      <a href="dashboard/" class="nav-link" id="enterLink">Enter</a>
     </div>
   </nav>
 
@@ -58,6 +57,37 @@
     </div>
   </div>
 
-  <script src="auth-navbar.js"></script>
+  <!-- Firebase SDK for Auth Check -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Check auth before allowing dashboard access
+    const enterLink = document.getElementById('enterLink');
+    enterLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          window.location.href = 'dashboard/';
+        } else {
+          window.location.href = 'dashboard/login.html';
+        }
+      }, { once: true });
+    });
+  </script>
 </body>
 </html>
