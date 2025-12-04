@@ -8,6 +8,47 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .coming-soon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 200px);
+      padding: 2rem;
+    }
+
+    .coming-soon-content {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .coming-soon-title {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      letter-spacing: -0.025em;
+    }
+
+    .coming-soon-text {
+      font-size: 1.25rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .coming-soon-title {
+        font-size: 2rem;
+      }
+
+      .coming-soon-text {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="dashboard-wrapper">
@@ -27,76 +68,10 @@
     </nav>
 
     <main class="dashboard-main">
-      <div class="resources-section">
-        <h2 class="section-title">Learning Resources</h2>
-        
-        <!-- Resource Categories -->
-        <div class="resource-grid">
-          <div class="resource-card">
-            <div class="resource-icon">📖</div>
-            <h3>Python Basics</h3>
-            <p>Learn the fundamentals of Python programming including variables, data types, and basic operations.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">Getting Started Guide</a></li>
-              <li><a href="#" class="resource-link">Python Cheat Sheet</a></li>
-              <li><a href="#" class="resource-link">Interactive Tutorial</a></li>
-            </ul>
-          </div>
-
-          <div class="resource-card">
-            <div class="resource-icon">🔄</div>
-            <h3>Control Flow</h3>
-            <p>Master if statements, loops, and conditional logic to control program execution.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">If Statements Guide</a></li>
-              <li><a href="#" class="resource-link">Loop Patterns</a></li>
-              <li><a href="#" class="resource-link">Practice Problems</a></li>
-            </ul>
-          </div>
-
-          <div class="resource-card">
-            <div class="resource-icon">📊</div>
-            <h3>Data Structures</h3>
-            <p>Understand lists, dictionaries, sets, and other essential data structures in Python.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">Lists & Tuples</a></li>
-              <li><a href="#" class="resource-link">Dictionaries & Sets</a></li>
-              <li><a href="#" class="resource-link">Advanced Structures</a></li>
-            </ul>
-          </div>
-
-          <div class="resource-card">
-            <div class="resource-icon">⚡</div>
-            <h3>Algorithms</h3>
-            <p>Learn common algorithms including sorting, searching, and problem-solving techniques.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">Sorting Algorithms</a></li>
-              <li><a href="#" class="resource-link">Search Techniques</a></li>
-              <li><a href="#" class="resource-link">Algorithm Analysis</a></li>
-            </ul>
-          </div>
-
-          <div class="resource-card">
-            <div class="resource-icon">🎯</div>
-            <h3>Competition Prep</h3>
-            <p>Resources for competitive programming and informatics olympiads.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">Competition Guide</a></li>
-              <li><a href="#" class="resource-link">Practice Platforms</a></li>
-              <li><a href="#" class="resource-link">Past Problems</a></li>
-            </ul>
-          </div>
-
-          <div class="resource-card">
-            <div class="resource-icon">🔗</div>
-            <h3>External Links</h3>
-            <p>Curated collection of external resources and learning platforms.</p>
-            <ul class="resource-links">
-              <li><a href="#" class="resource-link">Python.org Docs</a></li>
-              <li><a href="#" class="resource-link">LeetCode</a></li>
-              <li><a href="#" class="resource-link">Codeforces</a></li>
-            </ul>
-          </div>
+      <div class="coming-soon-container">
+        <div class="coming-soon-content">
+          <h1 class="coming-soon-title">Coming Soon</h1>
+          <p class="coming-soon-text">Learning resources and tutorials are currently being prepared.</p>
         </div>
       </div>
     </main>

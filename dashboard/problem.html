@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problem - Informatics Club</title>
+  <link rel="stylesheet" href="dashboard-style.css">
+  <link rel="stylesheet" href="problem-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Marked.js for Markdown support -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.0/marked.min.js"></script>
+  
+  <!-- KaTeX for LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Welcome back, <span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
+        <button id="dashboardAuthButton" class="auth-btn">Login</button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+      <a href="index.html" class="nav-item">Content</a>
+      <a href="resources.html" class="nav-item">Resources</a>
+      <a href="ide.html" class="nav-item">IDE</a>
+      <a href="challenge.html" class="nav-item">Challenge</a>
+    </nav>
+
+    <main class="dashboard-main">
+      <div class="problem-container">
+        <!-- Back button -->
+        <button class="back-button" onclick="window.history.back()">← Back to Problems</button>
+
+        <!-- Problem Header -->
+        <div class="problem-header">
+          <div class="problem-title-section">
+            <h1 id="problemTitle">Loading...</h1>
+            <div class="problem-badges">
+              <span id="difficultyBadge" class="difficulty-badge">Easy</span>
+              <span id="pointsBadge" class="points-badge">10 points</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem Content (Left) and IDE (Right) -->
+        <div class="problem-workspace">
+          <!-- Left: Problem Description -->
+          <div class="problem-description-panel">
+            <div class="problem-section">
+              <h2>Problem Description</h2>
+              <div id="problemDescription" class="description-content">
+                Loading problem description...
+              </div>
+            </div>
+
+            <div class="problem-section">
+              <h3>Sample Input</h3>
+              <pre id="sampleInput" class="code-block">Loading...</pre>
+            </div>
+
+            <div class="problem-section">
+              <h3>Sample Output</h3>
+              <pre id="sampleOutput" class="code-block">Loading...</pre>
+            </div>
+          </div>
+
+          <!-- Right: Embedded IDE -->
+          <div class="problem-ide-panel">
+            <div class="ide-container">
+              <div class="ide-tabs">
+                <button class="ide-tab active" onclick="switchTab('code')">Code</button>
+                <button class="ide-tab" onclick="switchTab('test')">Test Results</button>
+              </div>
+
+              <div id="codeTab" class="ide-tab-content active">
+                <div class="editor-section">
+                  <textarea class="code-editor" id="codeEditor" placeholder="# Write your Python code here..."></textarea>
+                </div>
+
+                <div class="ide-actions">
+                  <button class="run-button" id="runButton"><span class="button-icon">▶</span> Run Code</button>
+                  <button class="test-button" id="testButton"><span class="button-icon">✓</span> Run Tests</button>
+                  <button class="submit-button" id="submitButton"><span class="button-icon">📤</span> Submit</button>
+                </div>
+
+                <div class="output-section">
+                  <div class="section-header">
+                    <span class="section-title">Output</span>
+                    <button class="clear-button" id="clearButton">Clear</button>
+                  </div>
+                  <div class="output-box" id="outputBox">
+                    <span class="output-placeholder">Run your code to see output...</span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="testTab" class="ide-tab-content">
+                <div class="test-results" id="testResults">
+                  <p class="test-placeholder">Click "Run Tests" to see results...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    window.firebaseAuth = auth;
+    window.firebaseDB = db;
+    window.firestoreIncrement = increment;
+    window.firestoreDoc = doc;
+    window.firestoreSetDoc = setDoc;
+
+    // Update dashboard UI based on auth state
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+      
+      usernameEl.textContent = user.displayName || 'User';
+      usernameEl.onclick = () => window.location.href = 'home.html';
+      authBtn.textContent = 'Logout';
+      authBtn.onclick = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      };
+    });
+  </script>
+
+  <script src="problem.js"></script>
+</body>
+</html>
