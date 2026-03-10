@@ -275,9 +275,9 @@ __output__.getvalue().strip()
             index,
             name,
             passed,
-            input: input.length > 200 ? `(${input.split('\n').length} lines, ${input.length} characters)` : input,
-            expected: expected.length > 200 ? `(${expected.length} characters)` : expected,
-            actual: actual.length > 200 ? `(${actual.length} characters)` : actual
+            input: input.length > 50 ? '(Too long to show)' : input,
+            expected: expected.length > 50 ? '(Too long to show)' : expected,
+            actual: actual.length > 50 ? '(Too long to show)' : actual
         };
     } catch (error) {
         return {
@@ -319,28 +319,9 @@ function displayTestResults(results, passedCount, totalCount) {
     testResults.innerHTML = summary + testCasesHtml;
 }
 
-// Submit solution
-async function submitSolution() {
-    if (!currentProblem) return;
-    
-    const code = document.getElementById('codeEditor').value;
-    
-    if (!code.trim()) {
-        alert('Please write some code first!');
-        return;
-    }
-    
-    // Run tests first
-    await runTests();
-    
-    // In a real implementation, you would save the submission to Firebase here
-    alert('Submission saved! (This would normally save to your profile)');
-}
-
 // Event listeners
 document.getElementById('runButton').addEventListener('click', runCode);
 document.getElementById('testButton').addEventListener('click', runTests);
-document.getElementById('submitButton').addEventListener('click', submitSolution);
 document.getElementById('clearButton').addEventListener('click', () => {
     document.getElementById('outputBox').innerHTML = '<span class="output-placeholder">Run your code to see output...</span>';
 });

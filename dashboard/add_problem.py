@@ -20,6 +20,7 @@ def create_problem():
     points = int(input("Points (e.g., 10, 15, 20): "))
     
     print("\nProblem Description (type 'END' on a new line when done):")
+    print("Tip: Use Markdown and LaTeX! ($x^2$, ## Heading, **bold**, etc.)")
     description_lines = []
     while True:
         line = input()
@@ -31,64 +32,38 @@ def create_problem():
     sample_input = input("\nSample Input (or press Enter for no input): ").strip()
     sample_output = input("Sample Output: ").strip()
     
-    # Get test cases
-    print("\n--- Test Cases ---")
-    print("Choose test case type:")
-    print("1. Inline (type input/output directly)")
-    print("2. File-based (for large test cases)")
-    test_type = input("Choose (1-2): ").strip()
+    # Get test cases (file-based only)
+    print("\n--- File-Based Test Cases ---")
+    testcase_dir = f"problems/testcases/{problem_id}"
+    os.makedirs(testcase_dir, exist_ok=True)
+    print(f"✓ Created directory: {testcase_dir}")
+    print(f"\nManually create your test files in: {testcase_dir}/")
+    print(f"   - input1.txt, output1.txt")
+    print(f"   - input2.txt, output2.txt")
+    print(f"   - etc.")
+    print()
     
-    test_cases = []
     test_case_files = []
     
-    if test_type == "1":
-        # Inline test cases
-        while True:
-            print(f"\nInline Test Case {len(test_cases) + 1}:")
-            test_input = input("Input (or type 'DONE' to finish): ")
-            if test_input == "DONE":
-                break
-            test_output = input("Expected Output: ")
-            test_cases.append({
-                "input": test_input,
-                "expectedOutput": test_output
-            })
-    else:
-        # File-based test cases
-        testcase_dir = f"problems/testcases/{problem_id}"
-        os.makedirs(testcase_dir, exist_ok=True)
-        print(f"\nCreated directory: {testcase_dir}")
+    add_refs = input("Do you want to add test case file references to problems.json now? (y/n): ").strip().lower()
+    
+    if add_refs == 'y':
+        print(f"\nAdding references for files in {testcase_dir}/")
+        print("Make sure you've already created the input/output files!")
+        print()
         
         while True:
-            print(f"\nFile-based Test Case {len(test_case_files) + 1}:")
-            test_name = input("Test name (or type 'DONE' to finish): ")
+            test_num = len(test_case_files) + 1
+            print(f"\nTest Case {test_num}:")
+            print(f"  Will reference: input{test_num}.txt, output{test_num}.txt")
+            
+            test_name = input(f"Test name (or type 'DONE' to finish): ")
             if test_name == "DONE":
                 break
             
-            input_file_path = input("Path to input file (or type content): ").strip()
-            output_file_path = input("Path to output file (or type content): ").strip()
-            
-            # Save input
-            input_filename = f"input{len(test_case_files) + 1}.txt"
-            if os.path.exists(input_file_path):
-                with open(input_file_path, 'r') as f:
-                    input_content = f.read()
-            else:
-                input_content = input_file_path
-            
-            with open(f"{testcase_dir}/{input_filename}", 'w') as f:
-                f.write(input_content)
-            
-            # Save output
-            output_filename = f"output{len(test_case_files) + 1}.txt"
-            if os.path.exists(output_file_path):
-                with open(output_file_path, 'r') as f:
-                    output_content = f.read()
-            else:
-                output_content = output_file_path
-            
-            with open(f"{testcase_dir}/{output_filename}", 'w') as f:
-                f.write(output_content)
+            # Add reference to the files (assumes they exist)
+            input_filename = f"input{test_num}.txt"
+            output_filename = f"output{test_num}.txt"
             
             test_case_files.append({
                 "inputFile": f"{testcase_dir}/{input_filename}",
@@ -96,9 +71,13 @@ def create_problem():
                 "name": test_name
             })
             
-            print(f"✓ Saved test case files: {input_filename}, {output_filename}")
-    
-
+            print(f"✓ Added reference to: {input_filename}, {output_filename}")
+    else:
+        print(f"\n📁 Manually create test files in: {testcase_dir}/")
+        print(f"   - input1.txt, output1.txt")
+        print(f"   - input2.txt, output2.txt")
+        print(f"   - etc.")
+        print(f"\nThen add them to problems.json under 'testCaseFiles'.")
     
     # Create problem object
     problem = {
@@ -110,9 +89,6 @@ def create_problem():
         "sampleInput": sample_input,
         "sampleOutput": sample_output
     }
-    
-    if test_cases:
-        problem["testCases"] = test_cases
     
     if test_case_files:
         problem["testCaseFiles"] = test_case_files
@@ -134,7 +110,8 @@ def create_problem():
     
     print(f"\n✅ Problem '{title}' added successfully!")
     print(f"📝 Problem ID: {problem_id}")
-    print(f"🔗 Link: problem.html?id={problem_id}")
+    print(f"📁 Test case directory: {testcase_dir}/")
+    print(f"🔗 View at: problem.html?id={problem_id}")
 
 if __name__ == "__main__":
     create_problem()

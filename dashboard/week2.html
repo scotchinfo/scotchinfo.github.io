@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Week 2 - scotchinfo</title>
+  <link rel="stylesheet" href="dashboard-style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .week-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      color: white;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+    
+    .week-hero-number {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+    
+    .week-hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+      letter-spacing: -0.025em;
+    }
+    
+    .week-hero-description {
+      font-size: 1.125rem;
+      opacity: 0.95;
+      line-height: 1.6;
+      max-width: 800px;
+    }
+    
+    .problems-section {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e8ecf1;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e8ecf1;
+    }
+    
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a202c;
+    }
+    
+    .progress-badge {
+      background: #e0e7ff;
+      color: #3730a3;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+    }
+    
+    .problem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .problem-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border: 2px solid #e8ecf1;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+    }
+    
+    .problem-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+    
+    .problem-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+    
+    .problem-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .problem-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1a202c;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .problem-description {
+      font-size: 0.9375rem;
+      color: #6b7280;
+      margin: 0;
+      line-height: 1.5;
+    }
+    
+    .problem-meta {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    
+    .difficulty-badge {
+      padding: 0.375rem 0.875rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+    
+    .difficulty-badge.easy {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .difficulty-badge.medium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .difficulty-badge.hard {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .points-badge {
+      padding: 0.375rem 0.875rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+    
+    .status-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: #f3f4f6;
+      color: #9ca3af;
+    }
+    
+    .status-icon.solved {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .back-button {
+      padding: 0.625rem 1.25rem;
+      background: transparent;
+      color: #6b7280;
+      border: 1px solid #e8ecf1;
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      text-decoration: none;
+    }
+    
+    .back-button:hover {
+      background: #f7fafc;
+      border-color: #d1d5db;
+      color: #4a5568;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+    
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      color: #1a202c;
+      font-size: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1>Welcome back, <span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
+        <button id="dashboardAuthButton" class="auth-btn">Login</button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+      <a href="index.html" class="nav-item">Content</a>
+      <a href="resources.html" class="nav-item">Resources</a>
+      <a href="ide.html" class="nav-item">IDE</a>
+    </nav>
+
+    <main class="dashboard-main">
+      <a href="index.html" class="back-button">← Back to Content</a>
+      
+      <!-- Week Hero Section -->
+      <div class="week-hero">
+        <div class="week-hero-number">Week 2</div>
+        <h1 class="week-hero-title">Loops and Control</h1>
+        <p class="week-hero-description">
+          Master control flow in Python with if-statements, for loops, and while loops. 
+          Learn how to make decisions in your code and repeat actions efficiently.
+        </p>
+      </div>
+      
+      <!-- Problems Section -->
+      <div class="problems-section">
+        <div class="section-header">
+          <h2>Problems</h2>
+          <span class="progress-badge" id="progressBadge">0/0 completed</span>
+        </div>
+        
+        <div class="problem-list" id="problemList">
+          <div class="empty-state">
+            <h3>Loading problems...</h3>
+            <p>Please wait while we load the problems for this week.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQqNwN2thrYfR9LsOYr9p_-GHJ7Qr8NU0",
+      authDomain: "scotch-informatics-club.firebaseapp.com",
+      projectId: "scotch-informatics-club",
+      storageBucket: "scotch-informatics-club.firebasestorage.app",
+      messagingSenderId: "925756955037",
+      appId: "1:925756955037:web:df9ca311b0e488f0f57774",
+      measurementId: "G-LM0XYTWGJ3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Update dashboard UI based on auth state
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+      
+      usernameEl.textContent = user.displayName || 'User';
+      usernameEl.onclick = () => window.location.href = 'home.html';
+      authBtn.textContent = 'Logout';
+      authBtn.onclick = async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      };
+      
+      // Load problems after auth is confirmed
+      loadProblems();
+    });
+
+    // Load problems for this week
+    async function loadProblems() {
+      try {
+        const response = await fetch('problems/problems.json');
+        const data = await response.json();
+        
+        // Filter problems for week 2 (ids starting with "w2")
+        const weekProblems = data.problems.filter(p => p.id.startsWith('w2'));
+        
+        if (weekProblems.length === 0) {
+          document.getElementById('problemList').innerHTML = `
+            <div class="empty-state">
+              <h3>No Problems Yet</h3>
+              <p>Problems for this week are coming soon!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        // Update progress badge
+        document.getElementById('progressBadge').textContent = `0/${weekProblems.length} completed`;
+        
+        // Display problems
+        displayProblems(weekProblems);
+      } catch (error) {
+        console.error('Error loading problems:', error);
+        document.getElementById('problemList').innerHTML = `
+          <div class="empty-state">
+            <h3>Error Loading Problems</h3>
+            <p>Unable to load problems. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function displayProblems(problems) {
+      const problemList = document.getElementById('problemList');
+      
+      // Sort problems by ID
+      problems.sort((a, b) => a.id.localeCompare(b.id));
+      
+      const problemsHtml = problems.map((problem, index) => {
+        const problemNumber = index + 1;
+        const shortDesc = getShortDescription(problem.description);
+        
+        return `
+          <div class="problem-card" onclick="window.location.href='problem.html?id=${problem.id}'">
+            <div class="problem-number">${problemNumber}</div>
+            <div class="problem-info">
+              <h3 class="problem-title">${problem.title}</h3>
+              <p class="problem-description">${shortDesc}</p>
+            </div>
+            <div class="problem-meta">
+              <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
+              <span class="points-badge">${problem.points} pts</span>
+              <div class="status-icon" title="Not attempted">
+                <span>○</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      problemList.innerHTML = problemsHtml;
+    }
+    
+    function getShortDescription(description) {
+      // Get first sentence or first 100 characters
+      const firstLine = description.split('\n')[0];
+      if (firstLine.length > 100) {
+        return firstLine.substring(0, 100) + '...';
+      }
+      return firstLine;
+    }
+  </script>
+</body>
+</html>

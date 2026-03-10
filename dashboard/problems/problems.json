@@ -1,5 +1,26 @@
 {
   "problems": [
-    {}
+    {
+      "id": "w1p1",
+      "title": "Hello, World!",
+      "difficulty": "easy",
+      "points": 5,
+      "description": "Welcome to Scotch College Informatics Club.\nThis problem is to get you familiar with our custom judge.\nPrint `Hello, World!` in this format to output. Good luck!",
+      "sampleInput": "",
+      "sampleOutput": "Hello, World!",
+      "testCases": [
+        {
+          "input": "",
+          "expectedOutput": "Hello, World!"
+        }
+      ],
+      "testCaseFiles": [
+        {
+          "inputFile": "problems/testcases/w1p1/input1.txt",
+          "outputFile": "problems/testcases/w1p1/output1.txt",
+          "name": "Test Case 1"
+        }
+      ]
+    }
   ]
 }
