@@ -37,47 +37,24 @@ def create_problem():
     testcase_dir = f"problems/testcases/{problem_id}"
     os.makedirs(testcase_dir, exist_ok=True)
     print(f"✓ Created directory: {testcase_dir}")
-    print(f"\nManually create your test files in: {testcase_dir}/")
-    print(f"   - input1.txt, output1.txt")
-    print(f"   - input2.txt, output2.txt")
-    print(f"   - etc.")
-    print()
     
+    # Ask for number of test cases
+    num_tests = int(input("\nHow many test cases? "))
+    
+    # Automatically generate test case file references
     test_case_files = []
+    for i in range(1, num_tests + 1):
+        test_case_files.append({
+            "inputFile": f"{testcase_dir}/input{i}.txt",
+            "outputFile": f"{testcase_dir}/output{i}.txt",
+            "name": f"Test Case {i}"
+        })
     
-    add_refs = input("Do you want to add test case file references to problems.json now? (y/n): ").strip().lower()
-    
-    if add_refs == 'y':
-        print(f"\nAdding references for files in {testcase_dir}/")
-        print("Make sure you've already created the input/output files!")
-        print()
-        
-        while True:
-            test_num = len(test_case_files) + 1
-            print(f"\nTest Case {test_num}:")
-            print(f"  Will reference: input{test_num}.txt, output{test_num}.txt")
-            
-            test_name = input(f"Test name (or type 'DONE' to finish): ")
-            if test_name == "DONE":
-                break
-            
-            # Add reference to the files (assumes they exist)
-            input_filename = f"input{test_num}.txt"
-            output_filename = f"output{test_num}.txt"
-            
-            test_case_files.append({
-                "inputFile": f"{testcase_dir}/{input_filename}",
-                "outputFile": f"{testcase_dir}/{output_filename}",
-                "name": test_name
-            })
-            
-            print(f"✓ Added reference to: {input_filename}, {output_filename}")
-    else:
-        print(f"\n📁 Manually create test files in: {testcase_dir}/")
-        print(f"   - input1.txt, output1.txt")
-        print(f"   - input2.txt, output2.txt")
-        print(f"   - etc.")
-        print(f"\nThen add them to problems.json under 'testCaseFiles'.")
+    print(f"\n✓ Generated {num_tests} test case reference(s)")
+    print(f"\n📁 Now create these files in: {testcase_dir}/")
+    for i in range(1, num_tests + 1):
+        print(f"   - input{i}.txt")
+        print(f"   - output{i}.txt")
     
     # Create problem object
     problem = {

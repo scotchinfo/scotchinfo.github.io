@@ -91,8 +91,11 @@ function switchTab(tabName) {
     if (tabName === 'code') {
         tabs[0].classList.add('active');
         document.getElementById('codeTab').classList.add('active');
-    } else if (tabName === 'test') {
+    } else if (tabName === 'input') {
         tabs[1].classList.add('active');
+        document.getElementById('inputTab').classList.add('active');
+    } else if (tabName === 'test') {
+        tabs[2].classList.add('active');
         document.getElementById('testTab').classList.add('active');
     }
 }
@@ -101,6 +104,7 @@ function switchTab(tabName) {
 async function runCode() {
     const codeEditor = document.getElementById('codeEditor');
     const outputBox = document.getElementById('outputBox');
+    const customInput = document.getElementById('customInput');
     const code = codeEditor.value;
     
     if (!code.trim()) {
@@ -116,9 +120,28 @@ async function runCode() {
     }
     
     try {
+        // Get custom input if provided
+        const inputText = customInput.value || '';
+        
         const result = await pyodide.runPythonAsync(`
 import sys
 from io import StringIO
+
+# Set up input lines
+__stdin_lines__ = """${inputText.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}""".split('\\n')
+__stdin_index__ = 0
+
+# Custom input function
+def custom_input(prompt=''):
+    global __stdin_index__
+    if __stdin_index__ < len(__stdin_lines__):
+        line = __stdin_lines__[__stdin_index__]
+        __stdin_index__ += 1
+        return line
+    return ''
+
+# Override input and output
+__builtins__.input = custom_input
 
 output = StringIO()
 sys.stdout = output
@@ -324,6 +347,9 @@ document.getElementById('runButton').addEventListener('click', runCode);
 document.getElementById('testButton').addEventListener('click', runTests);
 document.getElementById('clearButton').addEventListener('click', () => {
     document.getElementById('outputBox').innerHTML = '<span class="output-placeholder">Run your code to see output...</span>';
+});
+document.getElementById('clearInputButton').addEventListener('click', () => {
+    document.getElementById('customInput').value = '';
 });
 
 // Load problem on page load

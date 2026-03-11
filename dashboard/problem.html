@@ -79,6 +79,7 @@
             <div class="ide-container">
               <div class="ide-tabs">
                 <button class="ide-tab active" onclick="switchTab('code')">Code</button>
+                <button class="ide-tab" onclick="switchTab('input')">Custom Input</button>
                 <button class="ide-tab" onclick="switchTab('test')">Test Results</button>
               </div>
 
@@ -99,6 +100,19 @@
                   </div>
                   <div class="output-box" id="outputBox">
                     <span class="output-placeholder">Run your code to see output...</span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="inputTab" class="ide-tab-content">
+                <div class="custom-input-section">
+                  <div class="section-header">
+                    <span class="section-title">Custom Input</span>
+                    <button class="clear-button" id="clearInputButton">Clear</button>
+                  </div>
+                  <textarea class="custom-input-editor" id="customInput" placeholder="Enter your custom input here...&#10;"></textarea>
+                  <div class="input-helper">
+                    <p><strong>💡 How to use:</strong> Enter inputs line by line. When your code calls <code>input()</code>, it will read from these lines in order.</p>
                   </div>
                 </div>
               </div>

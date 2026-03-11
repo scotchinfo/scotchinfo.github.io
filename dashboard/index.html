@@ -32,7 +32,7 @@
           <div class="week-number">W1</div>
           <div class="week-title">Intro to Python</div>
           <div class="week-meta">
-            <span class="week-problems">0/2 problems</span>
+            <span class="week-problems" id="week1-problems">0/0 problems</span>
             <span class="week-status">Available</span>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="week-number">W2</div>
           <div class="week-title">Loops and Control</div>
           <div class="week-meta">
-            <span class="week-problems">0/3 problems</span>
+            <span class="week-problems" id="week2-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -50,7 +50,7 @@
           <div class="week-number">W3</div>
           <div class="week-title">Functions</div>
           <div class="week-meta">
-            <span class="week-problems">0/3 problems</span>
+            <span class="week-problems" id="week3-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -59,7 +59,7 @@
           <div class="week-number">W4</div>
           <div class="week-title">Brute Force</div>
           <div class="week-meta">
-            <span class="week-problems">0/4 problems</span>
+            <span class="week-problems" id="week4-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <div class="week-number">W5</div>
           <div class="week-title">Greedy Algorithms</div>
           <div class="week-meta">
-            <span class="week-problems">0/4 problems</span>
+            <span class="week-problems" id="week5-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -77,7 +77,7 @@
           <div class="week-number">W6</div>
           <div class="week-title">Prefix Sums</div>
           <div class="week-meta">
-            <span class="week-problems">0/3 problems</span>
+            <span class="week-problems" id="week6-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <div class="week-number">W7</div>
           <div class="week-title">Two Pointers</div>
           <div class="week-meta">
-            <span class="week-problems">0/3 problems</span>
+            <span class="week-problems" id="week7-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -95,7 +95,7 @@
           <div class="week-number">W8</div>
           <div class="week-title">Binary Search</div>
           <div class="week-meta">
-            <span class="week-problems">0/4 problems</span>
+            <span class="week-problems" id="week8-problems">0/0 problems</span>
             <span class="week-status locked">Locked</span>
           </div>
         </div>
@@ -146,6 +146,28 @@
       }
     }
 
+    // Load problem counts for each week
+    async function loadProblemCounts() {
+      try {
+        const response = await fetch('problems/problems.json');
+        const data = await response.json();
+        
+        // Count problems for each week
+        for (let week = 1; week <= 8; week++) {
+          const weekPrefix = `w${week}`;
+          const weekProblems = data.problems.filter(p => p.id.startsWith(weekPrefix));
+          const count = weekProblems.length;
+          
+          const element = document.getElementById(`week${week}-problems`);
+          if (element) {
+            element.textContent = `0/${count} problem${count !== 1 ? 's' : ''}`;
+          }
+        }
+      } catch (error) {
+        console.error('Error loading problem counts:', error);
+      }
+    }
+
     // Update dashboard UI based on auth state
     onAuthStateChanged(auth, (user) => {
       // Redirect to login if not authenticated
@@ -169,6 +191,7 @@
 
     // Load stats on page load
     loadStats();
+    loadProblemCounts();
   </script>
 </body>
 </html>

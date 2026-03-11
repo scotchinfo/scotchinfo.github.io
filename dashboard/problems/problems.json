@@ -5,20 +5,71 @@
       "title": "Hello, World!",
       "difficulty": "easy",
       "points": 5,
-      "description": "Welcome to Scotch College Informatics Club.\nThis problem is to get you familiar with our custom judge.\nPrint `Hello, World!` in this format to output. Good luck!",
+      "description": "Welcome to Scotch College Informatics Club.\n\nThis problem is to get you familiar with our custom judge.\nPrint `Hello, World!` in this format to output. Good luck!",
       "sampleInput": "",
       "sampleOutput": "Hello, World!",
-      "testCases": [
-        {
-          "input": "",
-          "expectedOutput": "Hello, World!"
-        }
-      ],
       "testCaseFiles": [
         {
           "inputFile": "problems/testcases/w1p1/input1.txt",
           "outputFile": "problems/testcases/w1p1/output1.txt",
           "name": "Test Case 1"
+        }
+      ]
+    },
+    {
+      "id": "w1p2",
+      "title": "Largest Number",
+      "difficulty": "easy",
+      "points": 5,
+      "description": "Find the maximum element inside an array.\n\nYou are given an array of integers $A_1, A_2, A_3, \\cdots A_N$.\nFind the maximum value amongst all the elements in the array.\n\n**Input Format**:\n\nThe first line contains an integer $N$.\nLines 2 - ($N+1$) each contain an element in the array.\n\n**Output Format:**\n\nPrint one integer, the maximum value in the array.",
+      "sampleInput": "5\n1\n2\n4\n8\n16",
+      "sampleOutput": "16",
+      "testCaseFiles": [
+        {
+          "inputFile": "problems/testcases/w1p2/input1.txt",
+          "outputFile": "problems/testcases/w1p2/output1.txt",
+          "name": "Test Case 1"
+        },
+        {
+          "inputFile": "problems/testcases/w1p2/input2.txt",
+          "outputFile": "problems/testcases/w1p2/output2.txt",
+          "name": "Test Case 2"
+        },
+        {
+          "inputFile": "problems/testcases/w1p2/input3.txt",
+          "outputFile": "problems/testcases/w1p2/output3.txt",
+          "name": "Test Case 3"
+        }
+      ]
+    },
+    {
+      "id": "w1p3",
+      "title": "Adding Three Numbers",
+      "difficulty": "easy",
+      "points": 5,
+      "description": "Print the sum of the three numbers provided.\n\n**Input Format:**\n\nThe first line contains three integers `a`, `b`, `c` on a single line.\n\n**Output Format:**\n\nPrint one integer, the sum of the three numbers.\n\n**Constraints:**\n\n$1 \\leq a, b, c \\leq 10^5$",
+      "sampleInput": "1 2 3",
+      "sampleOutput": "6",
+      "testCaseFiles": [
+        {
+          "inputFile": "problems/testcases/w1p3/input1.txt",
+          "outputFile": "problems/testcases/w1p3/output1.txt",
+          "name": "Test Case 1"
+        },
+        {
+          "inputFile": "problems/testcases/w1p3/input2.txt",
+          "outputFile": "problems/testcases/w1p3/output2.txt",
+          "name": "Test Case 2"
+        },
+        {
+          "inputFile": "problems/testcases/w1p3/input3.txt",
+          "outputFile": "problems/testcases/w1p3/output3.txt",
+          "name": "Test Case 3"
+        },
+        {
+          "inputFile": "problems/testcases/w1p3/input4.txt",
+          "outputFile": "problems/testcases/w1p3/output4.txt",
+          "name": "Test Case 4"
         }
       ]
     }
