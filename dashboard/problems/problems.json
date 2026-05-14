@@ -72,6 +72,67 @@
           "name": "Test Case 4"
         }
       ]
+    },
+    {
+      "id": "w2p1",
+      "title": "Interval Sum",
+      "difficulty": "easy",
+      "points": 10,
+      "description": "Print the sum of all integers that fall within the interval $A$ to $B$ inclusive.\\n\\n**Input Format:**\\n\\nThe first line contains two integers $A$ and $B$ respectively.\\n\\n**Output Format:**\\n\\nPrint one integer, the sum of the integers in that range.\\n\\nConstraints:\\n\\n$1 \\leq A \\leq B \\leq 10^4$",
+      "sampleInput": "3 5",
+      "sampleOutput": "12",
+      "testCaseFiles": [
+        {
+          "inputFile": "problems/testcases/w2p1/input1.txt",
+          "outputFile": "problems/testcases/w2p1/output1.txt",
+          "name": "Test Case 1"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input2.txt",
+          "outputFile": "problems/testcases/w2p1/output2.txt",
+          "name": "Test Case 2"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input3.txt",
+          "outputFile": "problems/testcases/w2p1/output3.txt",
+          "name": "Test Case 3"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input4.txt",
+          "outputFile": "problems/testcases/w2p1/output4.txt",
+          "name": "Test Case 4"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input5.txt",
+          "outputFile": "problems/testcases/w2p1/output5.txt",
+          "name": "Test Case 5"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input6.txt",
+          "outputFile": "problems/testcases/w2p1/output6.txt",
+          "name": "Test Case 6"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input7.txt",
+          "outputFile": "problems/testcases/w2p1/output7.txt",
+          "name": "Test Case 7"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input8.txt",
+          "outputFile": "problems/testcases/w2p1/output8.txt",
+          "name": "Test Case 8"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input9.txt",
+          "outputFile": "problems/testcases/w2p1/output9.txt",
+          "name": "Test Case 9"
+        },
+        {
+          "inputFile": "problems/testcases/w2p1/input10.txt",
+          "outputFile": "problems/testcases/w2p1/output10.txt",
+          "name": "Test Case 10"
+        }
+      ]
     }
   ]
 }
