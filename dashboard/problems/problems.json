@@ -78,7 +78,7 @@
       "title": "Interval Sum",
       "difficulty": "easy",
       "points": 10,
-      "description": "Print the sum of all integers that fall within the interval $A$ to $B$ inclusive.\\n\\n**Input Format:**\\n\\nThe first line contains two integers $A$ and $B$ respectively.\\n\\n**Output Format:**\\n\\nPrint one integer, the sum of the integers in that range.\\n\\nConstraints:\\n\\n$1 \\leq A \\leq B \\leq 10^4$",
+      "description": "Print the sum of all integers that fall within the interval $A$ to $B$ inclusive.\n\n**Input Format:**\n\nThe first line contains two integers $A$ and $B$ respectively.\n\n**Output Format:**\n\nPrint one integer, the sum of the integers in that range.\n\nConstraints:\n\n$1 \\leq A \\leq B \\leq 10^4$",
       "sampleInput": "3 5",
       "sampleOutput": "12",
       "testCaseFiles": [
