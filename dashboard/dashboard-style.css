@@ -202,6 +202,11 @@ body {
   color: #991b1b;
 }
 
+.week-status.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
 .week-status.unlocked {
   background: #dbeafe;
   color: #1e40af;
