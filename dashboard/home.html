@@ -129,6 +129,17 @@
       profileName.textContent = displayName;
       profileEmail.textContent = user.email;
       userAvatar.textContent = displayName.charAt(0).toUpperCase();
+
+      // Fetch user stats
+      getDoc(doc(db, 'users', user.uid)).then(userDoc => {
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          const solvedCount = Object.keys(data.solvedProblems || {}).length;
+          document.getElementById('problemsSolved').textContent = solvedCount;
+        }
+      }).catch(error => {
+        console.error("Error fetching user data:", error);
+      });
     });
   </script>
 </body>

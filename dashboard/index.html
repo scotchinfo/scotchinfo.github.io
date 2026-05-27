@@ -147,7 +147,7 @@
     }
 
     // Load problem counts for each week
-    async function loadProblemCounts() {
+    async function loadProblemCounts(solvedProblems = {}) {
       try {
         const response = await fetch('problems/problems.json');
         const data = await response.json();
@@ -157,10 +157,11 @@
           const weekPrefix = `w${week}`;
           const weekProblems = data.problems.filter(p => p.id.startsWith(weekPrefix));
           const count = weekProblems.length;
+          const solvedCount = weekProblems.filter(p => solvedProblems[p.id]).length;
           
           const element = document.getElementById(`week${week}-problems`);
           if (element) {
-            element.textContent = `0/${count} problem${count !== 1 ? 's' : ''}`;
+            element.textContent = `${solvedCount}/${count} problem${count !== 1 ? 's' : ''}`;
           }
         }
       } catch (error) {
@@ -187,11 +188,23 @@
         await signOut(auth);
         window.location.href = 'login.html';
       };
+
+      // Fetch user solved problems
+      getDoc(doc(db, 'users', user.uid)).then(userDoc => {
+        let solvedProblems = {};
+        if (userDoc.exists()) {
+          solvedProblems = userDoc.data().solvedProblems || {};
+        }
+        loadProblemCounts(solvedProblems);
+      }).catch(error => {
+        console.error("Error fetching user data:", error);
+        loadProblemCounts();
+      });
     });
 
     // Load stats on page load
     loadStats();
-    loadProblemCounts();
+    // loadProblemCounts will be called after auth is verified
   </script>
 </body>
 </html>

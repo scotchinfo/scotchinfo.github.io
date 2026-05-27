@@ -256,6 +256,45 @@ async function runTests() {
     
     const totalTests = results.length;
     displayTestResults(results, passedCount, totalTests);
+    
+    // Save solved status if all tests passed
+    if (passedCount === totalTests && totalTests > 0) {
+        await saveProblemSolved(currentProblem.id);
+    }
+}
+
+// Save problem solved status to Firestore
+async function saveProblemSolved(problemId) {
+    if (!window.firebaseAuth || !window.firebaseDB) return;
+    
+    const user = window.firebaseAuth.currentUser;
+    if (!user) return;
+    
+    const testResults = document.getElementById('testResults');
+    const statusDiv = document.createElement('div');
+    statusDiv.style.padding = '1rem';
+    statusDiv.style.borderRadius = '8px';
+    statusDiv.style.marginTop = '1.5rem';
+    
+    try {
+        const userRef = window.firestoreDoc(window.firebaseDB, 'users', user.uid);
+        await window.firestoreSetDoc(userRef, {
+            solvedProblems: {
+                [problemId]: true
+            },
+            lastActive: new Date().toISOString()
+        }, { merge: true });
+        
+        console.log("Problem marked as solved in Firestore!");
+        statusDiv.style.background = '#d1fae5';
+        statusDiv.innerHTML = '<h3 style="margin: 0 0 0.5rem 0; color: #065f46;">🎉 Progress Saved!</h3><p style="margin: 0; color: #065f46;">Your solution has been recorded in the database.</p>';
+    } catch (error) {
+        console.error("Error saving solved status:", error);
+        statusDiv.style.background = '#fee2e2';
+        statusDiv.innerHTML = `<h3 style="margin: 0 0 0.5rem 0; color: #991b1b;">Error Saving Progress</h3><p style="margin: 0; color: #991b1b;">${error.message}</p>`;
+    }
+    
+    testResults.appendChild(statusDiv);
 }
 
 // Helper function to run a single test
