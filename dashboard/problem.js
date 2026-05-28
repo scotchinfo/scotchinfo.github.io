@@ -381,6 +381,113 @@ function displayTestResults(results, passedCount, totalCount) {
     testResults.innerHTML = summary + testCasesHtml;
 }
 
+// Auto-complete features for code editor
+document.getElementById('codeEditor').addEventListener('keydown', (e) => {
+    const codeEditor = document.getElementById('codeEditor');
+    const { selectionStart, selectionEnd, value } = codeEditor;
+    
+    // Handle Ctrl+Enter to run code
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('runButton').click();
+        return;
+    }
+    
+    // Handle Tab key - add 4 spaces
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd);
+        codeEditor.value = before + '    ' + after;
+        codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart + 4;
+        return;
+    }
+    
+    // Handle Backspace - delete 4 spaces if they exist before cursor
+    if (e.key === 'Backspace') {
+        const before = value.substring(0, selectionStart);
+        const lineStart = before.lastIndexOf('\n') + 1;
+        const currentLine = before.substring(lineStart);
+        
+        // Check if we're at the start of indentation (only spaces before cursor on this line)
+        if (currentLine.match(/^    +$/) && currentLine.length % 4 === 0) {
+            e.preventDefault();
+            const newBefore = before.substring(0, before.length - 4);
+            const after = value.substring(selectionEnd);
+            codeEditor.value = newBefore + after;
+            codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart - 4;
+            return;
+        }
+    }
+    
+    // Handle Enter key - auto-indent
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd);
+        
+        // Get current line
+        const lineStart = before.lastIndexOf('\n') + 1;
+        const currentLine = before.substring(lineStart);
+        
+        // Count leading spaces
+        const match = currentLine.match(/^(\s*)/);
+        let indent = match ? match[1] : '';
+        
+        // Check if line ends with : (for if, def, for, while, etc.)
+        const trimmedLine = currentLine.trim();
+        if (trimmedLine.endsWith(':')) {
+            indent += '    '; // Add extra indentation
+        }
+        
+        codeEditor.value = before + '\n' + indent + after;
+        codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart + 1 + indent.length;
+        return;
+    }
+    
+    // Handle closing brackets - skip over them if they're already there
+    const closingChars = [')', ']', '}', '"', "'"];
+    if (closingChars.includes(e.key) && value[selectionStart] === e.key) {
+        e.preventDefault();
+        codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart + 1;
+        return;
+    }
+    
+    // Auto-close brackets, parentheses, quotes
+    const pairs = {
+        '(': ')',
+        '[': ']',
+        '{': '}',
+        '"': '"',
+        "'": "'"
+    };
+    
+    if (pairs[e.key]) {
+        // For quotes, check if we should skip instead of insert
+        if ((e.key === '"' || e.key === "'") && value[selectionStart] === e.key) {
+            e.preventDefault();
+            codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart + 1;
+            return;
+        }
+        
+        e.preventDefault();
+        const before = value.substring(0, selectionStart);
+        const after = value.substring(selectionEnd);
+        const selected = value.substring(selectionStart, selectionEnd);
+        
+        if (selected) {
+            // Wrap selection
+            codeEditor.value = before + e.key + selected + pairs[e.key] + after;
+            codeEditor.selectionStart = selectionStart + 1;
+            codeEditor.selectionEnd = selectionEnd + 1;
+        } else {
+            // Insert pair
+            codeEditor.value = before + e.key + pairs[e.key] + after;
+            codeEditor.selectionStart = codeEditor.selectionEnd = selectionStart + 1;
+        }
+    }
+});
+
 // Event listeners
 document.getElementById('runButton').addEventListener('click', runCode);
 document.getElementById('testButton').addEventListener('click', runTests);

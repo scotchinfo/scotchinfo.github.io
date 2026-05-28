@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Committee - scotchinfo</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/jpeg" href="files/scotch.jpg">
 </head>
+
 <body class="no-matrix">
   <nav class="navbar">
     <div class="nav-container">
@@ -17,16 +20,16 @@
 
   <div class="committee-container">
     <h1>Our Committee</h1>
-    
+
     <div class="profile-grid">
       <div class="profile-card">
         <div class="profile-image">
           <img src="files/ron.jpg" alt="Ron Xue">
         </div>
         <h3>Ron Xue</h3>
-        <p class="role">11LJ</p>
+        <p class="role">12LJ</p>
         <p class="description">IOI '25 Bronze Medallist</p>
-        <p class="description">AIIO '23 Perfect Score</p>
+        <p class="description">AIIO '23 '26 Perfect Score</p>
         <p class="description">AIO '22 - '24 Gold</p>
         <a href="mailto:RX6807@scotchmel.vic.edu.au" class="email">Email: RX6807@scotchmel.vic.edu.au</a>
       </div>
@@ -36,10 +39,10 @@
           <img src="files/philip.jpg" alt="Philip Liu">
         </div>
         <h3>Philip Liu</h3>
-        <p class="role">10MN</p>
+        <p class="role">11MN</p>
         <p class="description">UNSW ProgComp '25 3rd Place</p>
-        <p class="description">FARIO '25 Silver</p>
-        <p class="description">AIO '23 - '25 Gold</p>
+        <p class="description">FARIO '26 Gold</p>
+        <p class="description">APIO '26 Bronze Medallist</p>
         <a href="mailto:PL7124@scotchmel.vic.edu.au" class="email">Email: PL7124@scotchmel.vic.edu.au</a>
       </div>
 
@@ -48,9 +51,9 @@
           <img src="files/matthew.jpg" alt="Matthew Lin">
         </div>
         <h3>Matthew Lin</h3>
-        <p class="role">11BD</p>
+        <p class="role">12BD</p>
         <p class="description">IOI '25 Silver Medallist</p>
-        <p class="description">APIO '25 Bronze Medallist</p>
+        <p class="description">APIO '26 Silver Medallist</p>
         <p class="description">AIO '25 Perfect Score</p>
         <a href="mailto:ML6804@scotchmel.vic.edu.au" class="email">Email: ML6804@scotchmel.vic.edu.au</a>
       </div>
@@ -79,7 +82,7 @@
     const enterLink = document.getElementById('enterLink');
     enterLink.addEventListener('click', (e) => {
       e.preventDefault();
-      
+
       onAuthStateChanged(auth, (user) => {
         if (user) {
           window.location.href = 'dashboard/';
@@ -90,4 +93,5 @@
     });
   </script>
 </body>
+
 </html>
