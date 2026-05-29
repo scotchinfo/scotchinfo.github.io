@@ -50,10 +50,6 @@
           <div class="stat-value" id="problemsSolved">0</div>
           <div class="stat-label">Problems Solved</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="currentStreak">0</div>
-          <div class="stat-label">Day Streak</div>
-        </div>
       </div>
 
       <!-- Quick Access -->
@@ -137,6 +133,7 @@
           const data = userDoc.data();
           const solvedCount = Object.keys(data.solvedProblems || {}).length;
           document.getElementById('problemsSolved').textContent = solvedCount;
+          document.getElementById('userSubmissions').textContent = data.problemSubmissions || 0;
         }
       }).catch(error => {
         console.error("Error fetching user data:", error);

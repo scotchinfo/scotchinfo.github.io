@@ -17,6 +17,22 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         # Remove query parameters
         path = self.path.split('?')[0]
         
+        # Intercept API calls
+        if path == '/api/resources':
+            import json
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            
+            resources_dir = os.path.join(os.getcwd(), 'resources')
+            files = []
+            if os.path.exists(resources_dir):
+                files = [f for f in os.listdir(resources_dir) if f.endswith('.md')]
+            
+            self.wfile.write(json.dumps(files).encode())
+            return
+        
         # Check if file exists (skip root)
         if path != '/' and not os.path.exists(path.lstrip('/')):
             # Serve custom 404 page

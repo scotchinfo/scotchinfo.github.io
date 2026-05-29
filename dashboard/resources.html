@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.0/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-light.min.css">
   <style>
     .coming-soon-container {
       display: flex;
@@ -68,10 +70,10 @@
     </nav>
 
     <main class="dashboard-main">
-      <div class="coming-soon-container">
-        <div class="coming-soon-content">
-          <h1 class="coming-soon-title">Coming Soon</h1>
-          <p class="coming-soon-text">Learning resources and tutorials are currently being prepared.</p>
+      <div class="resources-container">
+        <h2 style="font-size: 1.5rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;">Available Resources</h2>
+        <div id="resourcesList">
+          <p style="color: #6b7280; text-align: center;">Loading resources...</p>
         </div>
       </div>
     </main>
@@ -119,6 +121,95 @@
         window.location.href = 'login.html';
       };
     });
+
+    // Load resources
+    async function loadResources() {
+      const listEl = document.getElementById('resourcesList');
+      try {
+        let files = [];
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        try {
+          if (isLocal) {
+            let res = await fetch('/api/resources?t=' + Date.now());
+            if (res.ok) {
+              files = await res.json();
+            } else {
+              res = await fetch('../resources/?t=' + Date.now());
+              if (res.ok) {
+                const text = await res.text();
+                const matches = text.match(/href="([^"]+\.md)"/g);
+                if (matches) {
+                  files = matches.map(m => decodeURIComponent(m.match(/href="([^"]+)"/)[1]));
+                }
+              }
+            }
+          } else {
+            const res = await fetch('https://api.github.com/repos/scotchinfo/scotchinfo.github.io/contents/resources?t=' + Date.now());
+            if (res.ok) {
+              const data = await res.json();
+              files = data.filter(f => f.name.endsWith('.md')).map(f => f.name);
+            }
+          }
+        } catch (e) {
+          console.warn("Dynamic fetch failed, falling back to resources.json", e);
+        }
+        
+        if (!files || files.length === 0) {
+          const fallbackRes = await fetch('../resources/resources.json?t=' + Date.now());
+          if (fallbackRes.ok) {
+            files = await fallbackRes.json();
+          }
+        }
+        
+        // Sort files alphabetically, prioritizing underscores and using natural number sorting
+        files.sort((a, b) => {
+          const aLower = a.toLowerCase();
+          const bLower = b.toLowerCase();
+          if (aLower.startsWith('_') && !bLower.startsWith('_')) return -1;
+          if (!aLower.startsWith('_') && bLower.startsWith('_')) return 1;
+          return aLower.localeCompare(bLower, undefined, {numeric: true});
+        });
+        
+        listEl.innerHTML = '';
+        
+        if (files.length === 0) {
+          listEl.innerHTML = '<p style="color: #6b7280; text-align: center;">No resources found.</p>';
+          return;
+        }
+        
+        for (const file of files) {
+          try {
+            const res = await fetch(`../resources/${encodeURIComponent(file)}`);
+            if (!res.ok) throw new Error("File not found");
+            const text = await res.text();
+            
+            const div = document.createElement('div');
+            div.className = 'markdown-body';
+            div.style.marginBottom = '4rem';
+            div.style.background = '#fff';
+            div.style.padding = '3rem 4rem';
+            div.style.borderRadius = '8px';
+            div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            
+            div.innerHTML = marked.parse(text);
+            listEl.appendChild(div);
+          } catch (err) {
+            console.error(err);
+            const errDiv = document.createElement('div');
+            errDiv.style.color = '#e53e3e';
+            errDiv.style.marginBottom = '1rem';
+            errDiv.textContent = `Failed to load ${file}`;
+            listEl.appendChild(errDiv);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        listEl.innerHTML = '<p style="color: #e53e3e; text-align: center;">Error loading resources.</p>';
+      }
+    }
+    
+    window.addEventListener('DOMContentLoaded', loadResources);
   </script>
 </body>
 </html>

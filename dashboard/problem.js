@@ -100,6 +100,34 @@ function switchTab(tabName) {
     }
 }
 
+// Analytics tracking
+async function trackGlobalSubmission(lineCount) {
+    try {
+        if (!window.firebaseDB) return;
+        const analyticsRef = window.firestoreDoc(window.firebaseDB, 'analytics', 'stats');
+        await window.firestoreSetDoc(analyticsRef, {
+            totalSubmissions: window.firestoreIncrement(1),
+            totalLineCount: window.firestoreIncrement(lineCount),
+            lastUpdated: new Date().toISOString()
+        }, { merge: true });
+    } catch (error) {
+        console.error("Failed to update global analytics:", error);
+    }
+}
+
+async function trackUserProblemSubmission() {
+    try {
+        if (!window.firebaseDB || !window.firebaseAuth || !window.firebaseAuth.currentUser) return;
+        const userRef = window.firestoreDoc(window.firebaseDB, 'users', window.firebaseAuth.currentUser.uid);
+        await window.firestoreSetDoc(userRef, {
+            problemSubmissions: window.firestoreIncrement(1),
+            lastActive: new Date().toISOString()
+        }, { merge: true });
+    } catch (error) {
+        console.error("Failed to update user problem submissions:", error);
+    }
+}
+
 // Run code
 async function runCode() {
     const codeEditor = document.getElementById('codeEditor');
@@ -113,6 +141,9 @@ async function runCode() {
     }
     
     outputBox.textContent = 'Running...';
+    
+    const lineCount = code.split('\n').filter(line => line.trim().length > 0).length;
+    trackGlobalSubmission(lineCount);
     
     if (!pyodideReady) {
         outputBox.textContent = 'Loading Python environment...';
@@ -184,6 +215,10 @@ async function runTests() {
         alert('Please write some code first!');
         return;
     }
+    
+    const lineCount = code.split('\n').filter(line => line.trim().length > 0).length;
+    trackGlobalSubmission(lineCount);
+    trackUserProblemSubmission();
     
     if (!pyodideReady) {
         await initPyodide();
