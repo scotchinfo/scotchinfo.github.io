@@ -35,6 +35,7 @@ const EDGE_COLOR = '#94a3b8';
 const EDGE_WEIGHT_COLOR = '#4a5568';
 const ARROW_SIZE = 10;
 const BG_COLOR = '#fafbfc';
+const SIMULATE_FOREVER = true;
 
 // ── Resize canvas to fill container ──
 function resizeCanvas() {
@@ -186,7 +187,7 @@ function simulate() {
 
   draw();
 
-  if (simSteps < MAX_SIM_STEPS) {
+  if (SIMULATE_FOREVER || simSteps < MAX_SIM_STEPS) {
     animationId = requestAnimationFrame(simulate);
   } else {
     simulating = false;
