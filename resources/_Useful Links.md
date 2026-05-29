@@ -19,6 +19,7 @@ If you are invited to December Camp (AMT Informatics School of Excellence), you 
 ## Learn C++:
 
 [https://www.learncpp.com/](https://www.learncpp.com/)
+
 [https://www.codecademy.com/learn/learn-c-plus-plus](https://www.codecademy.com/learn/learn-c-plus-plus)
 
 ## More Practice
