@@ -16,7 +16,7 @@
   <div class="dashboard-wrapper">
     <header class="dashboard-header">
       <div class="header-content">
-        <h1>Welcome back, <span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
+        <h1><span id="dashboardGreetingPrefix">Welcome back, </span><span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
         <button id="dashboardAuthButton" class="auth-btn">Login</button>
       </div>
     </header>
@@ -98,14 +98,23 @@ print('Hello, World!')
 
     // Update dashboard UI based on auth state
     onAuthStateChanged(auth, (user) => {
-      // Redirect to login if not authenticated
+      const greetingPrefixEl = document.getElementById('dashboardGreetingPrefix');
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+
       if (!user) {
-        window.location.href = 'login.html';
+        if (greetingPrefixEl) greetingPrefixEl.textContent = '';
+        usernameEl.textContent = 'Guest Preview';
+        usernameEl.style.cursor = 'default';
+        usernameEl.onclick = null;
+        authBtn.textContent = 'Login';
+        authBtn.onclick = () => {
+          window.location.href = 'login.html';
+        };
         return;
       }
 
-      const usernameEl = document.getElementById('dashboardUsername');
-      const authBtn = document.getElementById('dashboardAuthButton');
+      if (greetingPrefixEl) greetingPrefixEl.textContent = 'Welcome back, ';
       
       usernameEl.textContent = user.displayName || 'User';
       usernameEl.onclick = () => window.location.href = 'home.html';

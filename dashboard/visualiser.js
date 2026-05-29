@@ -5,7 +5,6 @@ const canvas = document.getElementById('graphCanvas');
 const ctx = canvas.getContext('2d');
 const graphInput = document.getElementById('graphInput');
 const directedToggle = document.getElementById('directedToggle');
-const weightedToggle = document.getElementById('weightedToggle');
 const drawBtn = document.getElementById('drawBtn');
 const clearBtn = document.getElementById('clearBtn');
 const errorBox = document.getElementById('errorBox');
@@ -13,7 +12,6 @@ const errorBox = document.getElementById('errorBox');
 let nodes = [];
 let edges = [];
 let isDirected = false;
-let isWeighted = false;
 let animationId = null;
 
 // Dragging state
@@ -96,14 +94,20 @@ function parseInput() {
 
     const u = parts[0];
     const v = parts[1];
-    const w = parts.length >= 3 ? parts[2] : null;
+    const hasExplicitWeight = parts.length >= 3;
+    const w = hasExplicitWeight ? parts[2] : 1;
 
     if (isNaN(u) || isNaN(v) || u < 1 || v < 1 || u > numNodes || v > numNodes) {
       showError(`Edge on line ${i + 1}: nodes must be between 1 and ${numNodes}.`);
       return false;
     }
 
-    edges.push({ u, v, w });
+    if (hasExplicitWeight && (w === null || w === undefined || Number.isNaN(w))) {
+      showError(`Edge on line ${i + 1}: weight must be a number.`);
+      return false;
+    }
+
+    edges.push({ u, v, w, hasExplicitWeight });
   }
 
   hideError();
@@ -212,7 +216,7 @@ function draw() {
   for (const edge of edges) {
     const from = nodes[edge.u - 1];
     const to = nodes[edge.v - 1];
-    drawEdge(from, to, edge.w);
+    drawEdge(from, to, edge.w, edge.hasExplicitWeight);
   }
 
   // Draw nodes
@@ -251,7 +255,7 @@ function drawNode(node) {
   ctx.fillText(node.id, node.x, node.y);
 }
 
-function drawEdge(from, to, weight) {
+function drawEdge(from, to, weight, showWeightLabel) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const dist = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -290,7 +294,7 @@ function drawEdge(from, to, weight) {
   }
 
   // Weight label
-  if (isWeighted && weight !== null && weight !== undefined) {
+  if (showWeightLabel) {
     const midX = (startX + endX) / 2;
     const midY = (startY + endY) / 2;
 
@@ -389,7 +393,6 @@ canvas.addEventListener('mouseleave', () => {
 // ── Button handlers ──
 drawBtn.addEventListener('click', () => {
   isDirected = directedToggle.checked;
-  isWeighted = weightedToggle.checked;
 
   if (parseInput()) {
     // Start simulation

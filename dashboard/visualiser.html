@@ -17,7 +17,7 @@
   <div class="dashboard-wrapper">
     <header class="dashboard-header">
       <div class="header-content">
-        <h1>Welcome back, <span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
+        <h1><span id="dashboardGreetingPrefix">Welcome back, </span><span id="dashboardUsername" style="cursor: pointer;">Guest</span></h1>
         <button id="dashboardAuthButton" class="auth-btn">Login</button>
       </div>
     </header>
@@ -39,7 +39,7 @@
           <div class="vis-format-hint">
             <strong>Format:</strong><br>
             Line 1: <code>N</code> (number of nodes)<br>
-            Lines 2+: <code>u v</code> or <code>u v w</code> (edge with optional weight)
+            Lines 2+: <code>u v</code> or <code>u v w</code> (if <code>w</code> is provided, it will be shown as the edge weight)
           </div>
 
           <div class="vis-input-group">
@@ -58,11 +58,6 @@
               <input type="checkbox" id="directedToggle">
               <span class="toggle-track"></span>
               <span class="toggle-label">Directed</span>
-            </label>
-            <label class="vis-toggle">
-              <input type="checkbox" id="weightedToggle">
-              <span class="toggle-track"></span>
-              <span class="toggle-label">Weighted</span>
             </label>
           </div>
 
@@ -104,14 +99,23 @@
 
     // Update dashboard UI based on auth state
     onAuthStateChanged(auth, (user) => {
-      // Redirect to login if not authenticated
+      const greetingPrefixEl = document.getElementById('dashboardGreetingPrefix');
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+
       if (!user) {
-        window.location.href = 'login.html';
+        if (greetingPrefixEl) greetingPrefixEl.textContent = '';
+        usernameEl.textContent = 'Guest Preview';
+        usernameEl.style.cursor = 'default';
+        usernameEl.onclick = null;
+        authBtn.textContent = 'Login';
+        authBtn.onclick = () => {
+          window.location.href = 'login.html';
+        };
         return;
       }
 
-      const usernameEl = document.getElementById('dashboardUsername');
-      const authBtn = document.getElementById('dashboardAuthButton');
+      if (greetingPrefixEl) greetingPrefixEl.textContent = 'Welcome back, ';
 
       usernameEl.textContent = user.displayName || 'User';
       usernameEl.style.cursor = 'pointer';

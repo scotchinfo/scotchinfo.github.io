@@ -14,7 +14,7 @@
   <div class="dashboard-wrapper">
     <header class="dashboard-header">
       <div class="header-content">
-        <h1>Welcome back, <span id="dashboardUsername">Guest</span></h1>
+        <h1><span id="dashboardGreetingPrefix">Welcome back, </span><span id="dashboardUsername">Guest</span></h1>
         <button id="dashboardAuthButton" class="auth-btn">Login</button>
       </div>
     </header>
@@ -30,7 +30,7 @@
     <main class="dashboard-main">
       <!-- Weekly Plan Grid -->
       <div class="weekly-plan">
-        <div class="week-card" onclick="window.location.href='week1.html'">
+        <div class="week-card" onclick="handleWeekClick(1)">
           <div class="week-number">W1</div>
           <div class="week-title">Intro to Python</div>
           <div class="week-meta">
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div class="week-card" onclick="window.location.href='week2.html'">
+        <div class="week-card" onclick="handleWeekClick(2)">
           <div class="week-number">W2</div>
           <div class="week-title">Loops and Control</div>
           <div class="week-meta">
@@ -107,8 +107,18 @@
 
   <script>
     function handleWeekClick(weekNumber) {
+      const user = window.__dashboardUser || (window.firebaseAuth && window.firebaseAuth.currentUser);
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if (weekNumber === 1 || weekNumber === 2) {
+        window.location.href = `week${weekNumber}.html`;
+        return;
+      }
+
       console.log(`Week ${weekNumber} clicked`);
-      // Placeholder for future navigation
     }
   </script>
 
@@ -137,11 +147,15 @@
     // Load analytics stats
     async function loadStats() {
       try {
+        const totalSubmissionsEl = document.getElementById('totalSubmissions');
+        const totalLinesEl = document.getElementById('totalLines');
+        if (!totalSubmissionsEl && !totalLinesEl) return;
+
         const statsDoc = await getDoc(doc(db, 'analytics', 'stats'));
         if (statsDoc.exists()) {
           const data = statsDoc.data();
-          document.getElementById('totalSubmissions').textContent = data.totalSubmissions || 0;
-          document.getElementById('totalLines').textContent = (data.totalLineCount || 0).toLocaleString();
+          if (totalSubmissionsEl) totalSubmissionsEl.textContent = data.totalSubmissions || 0;
+          if (totalLinesEl) totalLinesEl.textContent = (data.totalLineCount || 0).toLocaleString();
         }
       } catch (error) {
         console.error('Error loading stats:', error);
@@ -173,14 +187,25 @@
 
     // Update dashboard UI based on auth state
     onAuthStateChanged(auth, (user) => {
-      // Redirect to login if not authenticated
+      window.__dashboardUser = user || null;
+      const greetingPrefixEl = document.getElementById('dashboardGreetingPrefix');
+      const usernameEl = document.getElementById('dashboardUsername');
+      const authBtn = document.getElementById('dashboardAuthButton');
+
       if (!user) {
-        window.location.href = 'login.html';
+        if (greetingPrefixEl) greetingPrefixEl.textContent = '';
+        usernameEl.textContent = 'Guest Preview';
+        usernameEl.style.cursor = 'default';
+        usernameEl.onclick = null;
+        authBtn.textContent = 'Login';
+        authBtn.onclick = () => {
+          window.location.href = 'login.html';
+        };
+        loadProblemCounts();
         return;
       }
 
-      const usernameEl = document.getElementById('dashboardUsername');
-      const authBtn = document.getElementById('dashboardAuthButton');
+      if (greetingPrefixEl) greetingPrefixEl.textContent = 'Welcome back, ';
       
       usernameEl.textContent = user.displayName || 'User';
       usernameEl.style.cursor = 'pointer';

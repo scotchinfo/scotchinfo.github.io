@@ -34,7 +34,7 @@
         </div>
         
         <p class="auth-switch">Don't have an account? <a href="#" id="showSignup">Create one</a></p>
-        <p class="back-link"><a href="../index.html">← Back to home</a></p>
+        <p class="back-link"><a href="index.html" class="js-back">← Back</a></p>
       </div>
 
       <!-- Signup Form (Hidden by default) -->
@@ -62,7 +62,7 @@
         </div>
         
         <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign in</a></p>
-        <p class="back-link"><a href="../index.html">← Back to home</a></p>
+        <p class="back-link"><a href="index.html" class="js-back">← Back</a></p>
       </div>
 
       <!-- Logged In View (Hidden by default) -->
@@ -109,6 +109,35 @@
     window.firebaseAuth = auth;
     
     console.log("Firebase Auth initialized!");
+  </script>
+
+  <script>
+    document.querySelectorAll('a.js-back').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const fallbackUrl = 'index.html';
+
+        const ref = document.referrer;
+        if (ref) {
+          try {
+            const refUrl = new URL(ref, window.location.href);
+            if (refUrl.origin === window.location.origin) {
+              window.location.href = refUrl.href;
+              return;
+            }
+          } catch {
+            // ignore malformed referrer
+          }
+        }
+
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+
+        window.location.href = fallbackUrl;
+      });
+    });
   </script>
 
   <script src="login.js"></script>
